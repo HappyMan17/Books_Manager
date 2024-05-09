@@ -1,32 +1,34 @@
 import SearchBar from "@/components/SearchBar";
 import BookCardSection from "./components/BookCardSection";
+import k from "@/lib/constants";
+import { Book, Query } from "@/lib/definitions";
+import { getBooks, getDefaultBooks } from "@/lib/data";
 
 const searchOptions = ["Author", "Title"];
 
-export default function SearchPage({
+export default async function SearchPage({
   searchParams,
 } : {
   searchParams: {
     query: string;
     filter: string;
     page: string;
+    limit: string;
   };
 }) {
-  const getFullQuery = () => {
-    const currentPage = Number(searchParams?.page || 1);
-    const query = searchParams?.query || '';
-    const filter = searchParams?.filter || '';
+  const currentPage = Number(searchParams?.page || k.INIT_PAGE);
+  const currentLimit = Number(searchParams?.limit || k.INIT_LIMIT);
+  const query = searchParams?.query || '';
+  const filter = searchParams?.filter || '';
 
-    if (!query) {
-      return '';
-    }
-
-    if (filter === 'q') {
-      return `${filter}=${query}&page=${currentPage}`;
-    }
-
-    return `${filter}=${query}`;
+  const fullQuery: Query = {
+    filter: filter,
+    query: query.replace(/ /g, '+'),
+    page: currentPage.toString(),
+    limit: currentLimit.toString(),
   };
+
+  const books: Book[] = query ? await getBooks(fullQuery) : await getDefaultBooks();
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -38,9 +40,17 @@ export default function SearchPage({
       </section>
       <section className="h-full flex flex-col overflow-hidden rounded-sm p-3  ">
         <h1 className="text-2xl font-bold"> BOOK LIST: </h1>
-        <div className="max-h-full flex justify-center overflow-y-scroll " >
-          <BookCardSection query={getFullQuery()} />
-        </div>
+        {
+          books ? (
+            <div className="max-h-full flex justify-center overflow-y-scroll " >
+              <BookCardSection books={books} query={fullQuery} />
+            </div>
+          ) : (
+            <div className="max-h-full flex justify-center pt-5">
+              <h1 className="text-4xl"> No books found </h1>
+            </div>
+          )
+        }
       </section>
     </div>
   )

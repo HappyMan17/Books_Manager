@@ -6,6 +6,7 @@ import SearchIcon from "@/icons/SearchIcon";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import k from "@/lib/constants";
 
 const filterOptions: Record<string, string> = {
   "Title": "q",
@@ -26,12 +27,16 @@ const SearchBar = ({ searchOptions }: SearchBarProps) => {
   
   const params = new URLSearchParams(searchParams);
   const filter = searchParams.get('filter')?.toString();
-  
-  params.set("filter", filterOptions["Author"])
+
+  if (!params.get("filter")) {
+    params.set("filter", filterOptions["Author"])
+  }
 
   const handleSearch = (term: string) => {
     if (term) {
       params.set("query", term);
+      params.set("page", k.INIT_PAGE.toString());
+      params.set("limit", k.INIT_LIMIT.toString());
     } else {
       params.delete("query");
     }
