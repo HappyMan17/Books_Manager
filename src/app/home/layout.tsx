@@ -6,7 +6,7 @@ const HomeLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="h-screen flex flex-row overflow-hidden bg-gray-700">
+    <div className="max-h-dvh flex flex-row bg-gray-700">
       <Sidebar />
       <section className="m-2 p-5 w-full rounded-md bg-white dark:bg-gray-900">
         {children}

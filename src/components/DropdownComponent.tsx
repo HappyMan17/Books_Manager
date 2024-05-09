@@ -8,9 +8,16 @@ interface props {
   title: string;
   buttonProps?: string;
   icon: any;
+  onChangeSelection: (item: string) => void;
 }
 
-const DropdownComponent = ({ items, title, icon, buttonProps = '' }: props) => {
+const DropdownComponent = ({
+  items,
+  title,
+  icon,
+  buttonProps = '',
+  onChangeSelection,
+}: props) => {
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -26,7 +33,7 @@ const DropdownComponent = ({ items, title, icon, buttonProps = '' }: props) => {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions" className="dark:bg-black rounded-lg p-2">
         {items.map((item, index) => (
-          <DropdownItem key={index} onClick={() => alert(item)}>
+          <DropdownItem key={index} onClick={() => onChangeSelection(item)}>
             {item}
           </DropdownItem>
         ))}
