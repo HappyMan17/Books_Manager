@@ -7,6 +7,7 @@ import MessageIcon from "@/icons/MessageIcon";
 import SearchIcon from "@/icons/SearchIcon";
 import SettingsIcon from "@/icons/SettingsIcon";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const pages = [
@@ -26,14 +27,16 @@ const pages = [
     icon: <HeartIcon />,
   },
   {
-    name: 'Already Read',
+    name: 'Read',
     route: '/read',
     icon: <BooksIcon />,
   },
 ]
 
 const Sidebar = () => {
-  const [pageSelected, setpageSelected] = useState("Dashboard");
+  const pathName = usePathname();
+  const currentPage = pages.find(page => pathName.includes(page.route));
+  const [pageSelected, setpageSelected] = useState(currentPage?.name ?? "Dashboard");
 
   return (
     <section className="h-screen">
