@@ -1,7 +1,5 @@
-'use client'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { Button } from "@nextui-org/button";
-import ArrowDownIcon from "@/icons/ArrowDownIcon";
 
 interface props {
   items: string[];
