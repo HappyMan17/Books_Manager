@@ -1,8 +1,11 @@
+import { Suspense } from "react";
+
 import SearchBar from "@/components/SearchBar";
 import BookCardSection from "./components/BookCardSection";
 import k from "@/lib/constants";
 import { Book, Query } from "@/lib/definitions";
 import { getBooks, getDefaultBooks } from "@/lib/data";
+import BookCardSectionSkeleton from "@/components/Skeletons/BookCardSectionSkeleton";
 
 const searchOptions = ["Author", "Title"];
 
@@ -43,7 +46,9 @@ export default async function SearchPage({
         {
           books ? (
             <div className="max-h-full flex justify-center overflow-y-scroll " >
-              <BookCardSection books={books} query={fullQuery} />
+              <Suspense fallback={<BookCardSectionSkeleton />}>
+                <BookCardSection books={books} query={fullQuery} />
+              </Suspense>
             </div>
           ) : (
             <div className="max-h-full flex justify-center pt-5">
