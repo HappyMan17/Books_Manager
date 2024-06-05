@@ -9,16 +9,18 @@ import BookCardSectionSkeleton from "@/components/Skeletons/BookCardSectionSkele
 
 const searchOptions = ["Author", "Title"];
 
-export default async function SearchPage({
-  searchParams,
-} : {
+type SearchPageProps = {
   searchParams: {
     query: string;
     filter: string;
     page: string;
     limit: string;
   };
-}) {
+}
+
+export default async function SearchPage({
+  searchParams,
+}: SearchPageProps) {
   const currentPage = Number(searchParams?.page || k.INIT_PAGE);
   const currentLimit = Number(searchParams?.limit || k.INIT_LIMIT);
   const query = searchParams?.query || '';
