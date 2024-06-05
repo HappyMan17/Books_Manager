@@ -1,4 +1,5 @@
 'use client'
+import { useDebouncedCallback } from "use-debounce";
 
 import ArrowDownIcon from "@/icons/ArrowDownIcon";
 import DropdownComponent from "./DropdownComponent";
@@ -32,7 +33,7 @@ const SearchBar = ({ searchOptions }: SearchBarProps) => {
     params.set("filter", filterOptions["Author"])
   }
 
-  const handleSearch = (term: string) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
     if (term) {
       params.set("query", term);
       params.set("page", k.INIT_PAGE.toString());
@@ -42,7 +43,7 @@ const SearchBar = ({ searchOptions }: SearchBarProps) => {
     }
 
     replace(`${pathName}?${params.toString()}`);
-  };
+  }, 300);
 
   const handleDropdownSelection = (item: string) => {
     if (item) {
